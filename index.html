@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Street Store | Moda Urbana – Jales/SP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =============================================
+       VARIÁVEIS & RESET
+    ============================================= */
+    :root {
+      --bg:        #0a0a0a;
+      --bg2:       #111111;
+      --bg3:       #181818;
+      --card:      #141414;
+      --border:    rgba(255,255,255,0.07);
+      --white:     #ffffff;
+      --muted:     #888888;
+      --gold:      #e8a020;
+      --gold2:     #f5c842;
+      --green:     #25D366;
+      --radius:    14px;
+      --trans:     0.35s cubic-bezier(.4,0,.2,1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    img { display: block; width: 100%; object-fit: cover; }
+    a { text-decoration: none; color: inherit; }
+    button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+    /* =============================================
+       SCROLLBAR
+    ============================================= */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 99px; }
+
+    /* =============================================
+       NAVBAR
+    ============================================= */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .navbar-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .navbar-logo-icon {
+      font-size: 18px;
+      color: var(--gold);
+    }
+
+    .navbar-brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 2px;
+      color: var(--white);
+    }
+
+    .navbar-cta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      background: var(--green);
+      color: var(--white);
+      font-weight: 600;
+      font-size: 14px;
+      border-radius: 50px;
+      transition: var(--trans);
+    }
+    .navbar-cta:hover { filter: brightness(1.1); transform: scale(1.03); }
+    .navbar-cta svg { flex-shrink: 0; }
+
+    /* =============================================
+       HERO
+    ============================================= */
+    .hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      /*
+        =====================================================
+        👉 SUBSTITUA A URL ABAIXO PELA SUA FOTO DE BANNER
+           (use uma imagem de alta resolução da sua coleção)
+        =====================================================
+      */
+      background-image: url('https://images.unsplash.com/photo-1523398002811-999ca8dec234?w=1400&auto=format&fit=crop');
+      background-size: cover;
+      background-position: center top;
+      transform: scale(1.04);
+      animation: heroZoom 8s ease forwards;
+    }
+
+    @keyframes heroZoom { to { transform: scale(1); } }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(10,10,10,1) 0%,
+        rgba(10,10,10,0.55) 40%,
+        rgba(10,10,10,0.15) 100%
+      );
+    }
+
+    /* Grain texture */
+    .hero-overlay::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 24px 60px;
+      max-width: 700px;
+      animation: fadeUp 0.9s 0.3s both;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: rgba(232,160,32,0.15);
+      border: 1px solid rgba(232,160,32,0.35);
+      border-radius: 50px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gold2);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(56px, 14vw, 110px);
+      line-height: 0.95;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+    }
+
+    .hero-title span {
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-sub {
+      font-size: 16px;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 32px;
+      max-width: 380px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 28px;
+      background: var(--green);
+      color: var(--white);
+      font-size: 15px;
+      font-weight: 700;
+      border-radius: 50px;
+      transition: var(--trans);
+      box-shadow: 0 8px 32px rgba(37,211,102,0.35);
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(37,211,102,0.45); }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 28px;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: var(--white);
+      font-size: 15px;
+      font-weight: 500;
+      border-radius: 50px;
+      transition: var(--trans);
+      backdrop-filter: blur(10px);
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.4); }
+
+    /* =============================================
+       PROOF BAR (Prova Social)
+    ============================================= */
+    .proof-bar {
+      background: linear-gradient(135deg, var(--bg2) 0%, var(--bg3) 100%);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 28px 24px;
+      animation: fadeUp 0.7s 0.5s both;
+    }
+
+    .proof-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 24px;
+    }
+
+    .proof-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 4px;
+    }
+
+    .proof-icon { font-size: 22px; margin-bottom: 4px; }
+
+    .proof-value {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 1px;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .proof-label {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* =============================================
+       CATALOG SECTION
+    ============================================= */
+    .catalog {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 64px 20px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 42px;
+      letter-spacing: 2px;
+    }
+
+    .section-subtitle {
+      font-size: 13px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* =============================================
+       FILTER TABS
+    ============================================= */
+    .filters {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 36px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+    .filters::-webkit-scrollbar { display: none; }
+
+    .filter-btn {
+      flex-shrink: 0;
+      padding: 10px 22px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 50px;
+      letter-spacing: 0.5px;
+      transition: var(--trans);
+      text-transform: uppercase;
+    }
+    .filter-btn:hover { color: var(--white); border-color: rgba(255,255,255,0.2); }
+    .filter-btn.active {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: #000;
+    }
+
+    /* =============================================
+       PRODUCT GRID
+    ============================================= */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .product-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: var(--trans);
+      animation: fadeUp 0.6s both;
+      display: flex;
+      flex-direction: column;
+    }
+    .product-card:hover {
+      border-color: rgba(232,160,32,0.3);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+
+    .product-img-wrap {
+      position: relative;
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      background: var(--bg3);
+    }
+
+    .product-img-wrap img {
+      height: 100%;
+      transition: transform 0.6s cubic-bezier(.4,0,.2,1);
+    }
+    .product-card:hover .product-img-wrap img {
+      transform: scale(1.08);
+    }
+
+    /* NEW / SALE badges */
+    .product-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      padding: 4px 10px;
+      border-radius: 50px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .badge-new  { background: var(--gold); color: #000; }
+    .badge-sale { background: #e84040;     color: #fff; }
+
+    .product-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .product-category {
+      font-size: 11px;
+      color: var(--gold);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .product-name {
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .product-pricing {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-top: 2px;
+    }
+
+    .product-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px;
+      letter-spacing: 1px;
+      color: var(--gold2);
+    }
+
+    .product-old-price {
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: line-through;
+    }
+
+    .product-actions {
+      margin-top: auto;
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-want {
+      flex: 1;
+      padding: 12px;
+      background: rgba(232,160,32,0.1);
+      border: 1px solid rgba(232,160,32,0.35);
+      color: var(--gold2);
+      font-weight: 700;
+      font-size: 13px;
+      border-radius: 8px;
+      letter-spacing: 0.5px;
+      transition: var(--trans);
+    }
+    .btn-want:hover {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: #000;
+    }
+
+    .btn-wpp-card {
+      padding: 12px 14px;
+      background: rgba(37,211,102,0.12);
+      border: 1px solid rgba(37,211,102,0.3);
+      border-radius: 8px;
+      color: var(--green);
+      transition: var(--trans);
+      display: flex;
+      align-items: center;
+    }
+    .btn-wpp-card:hover {
+      background: var(--green);
+      color: #fff;
+    }
+
+    /* =============================================
+       RECORD SECTION (Prova Social destaque)
+    ============================================= */
+    .record-section {
+      margin: 0 20px 64px;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .record-card {
+      background: linear-gradient(135deg, #1a1200 0%, #0a0a0a 60%);
+      border: 1px solid rgba(232,160,32,0.25);
+      border-radius: 20px;
+      padding: 48px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      flex-wrap: wrap;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .record-card::before {
+      content: '👑';
+      position: absolute;
+      font-size: 200px;
+      right: -20px;
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: 0.05;
+      pointer-events: none;
+    }
+
+    .record-left { position: relative; z-index: 1; }
+
+    .record-eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+
+    .record-headline {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(36px, 8vw, 60px);
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    .record-highlight {
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .record-desc {
+      color: rgba(255,255,255,0.55);
+      font-size: 15px;
+      max-width: 400px;
+    }
+
+    .record-right {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .record-tag {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 20px;
+      background: rgba(232,160,32,0.08);
+      border: 1px solid rgba(232,160,32,0.2);
+      border-radius: 12px;
+      font-size: 14px;
+    }
+
+    .record-tag span { font-weight: 700; color: var(--gold2); }
+
+    /* =============================================
+       FOOTER / INFO
+    ============================================= */
+    .footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 48px 24px 32px;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+    }
+
+    .footer-brand { display: flex; flex-direction: column; gap: 12px; }
+
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 36px;
+      letter-spacing: 3px;
+    }
+
+    .footer-tagline {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 240px;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .social-link {
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 16px;
+      transition: var(--trans);
+    }
+    .social-link:hover { color: var(--gold); border-color: var(--gold); }
+
+    .footer-col h4 {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .footer-info-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 12px;
+    }
+
+    .footer-info-item svg { flex-shrink: 0; margin-top: 2px; }
+
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 40px auto 0;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* =============================================
+       FLOATING WHATSAPP BUTTON
+    ============================================= */
+    .wpp-float {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 200;
+      width: 60px;
+      height: 60px;
+      background: var(--green);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 30px rgba(37,211,102,0.5);
+      transition: var(--trans);
+      animation: wppPulse 2.5s infinite;
+    }
+    .wpp-float:hover { transform: scale(1.12); box-shadow: 0 12px 40px rgba(37,211,102,0.65); }
+
+    @keyframes wppPulse {
+      0%, 100% { box-shadow: 0 8px 30px rgba(37,211,102,0.5); }
+      50%       { box-shadow: 0 8px 40px rgba(37,211,102,0.75); }
+    }
+
+    /* =============================================
+       ANIMATIONS
+    ============================================= */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* =============================================
+       RESPONSIVE
+    ============================================= */
+    @media (max-width: 640px) {
+      .navbar-cta span { display: none; }
+      .hero-content { padding: 0 20px 80px; }
+      .proof-grid { grid-template-columns: repeat(2, 1fr); }
+      .record-card { flex-direction: column; text-align: center; }
+      .record-right { width: 100%; }
+      .footer-bottom { justify-content: center; text-align: center; }
+      .product-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    }
+
+    @media (max-width: 380px) {
+      .product-grid { grid-template-columns: 1fr; }
+    }
+
+    /* =============================================
+       EMPTY STATE (filtro sem resultado)
+    ============================================= */
+    .empty-state {
+      grid-column: 1/-1;
+      text-align: center;
+      padding: 64px 20px;
+      color: var(--muted);
+    }
+    .empty-state p { font-size: 15px; margin-top: 8px; }
+  </style>
+</head>
+<body>
+
+  <!-- =============================================
+       NAVBAR
+  ============================================= -->
+  <nav class="navbar">
+    <div class="navbar-logo">
+      <span class="navbar-logo-icon">👑</span>
+      <span class="navbar-brand">Street Store</span>
+    </div>
+
+    <!--
+      =====================================================
+      👉 SUBSTITUA O NÚMERO DO WHATSAPP:
+         Troque "5517997435739" pelo seu número completo
+         (código do país + DDD + número), sem espaços.
+      =====================================================
+    -->
+    <a class="navbar-cta"
+       href="https://wa.me/5517997435739?text=Olá!%20Vim%20pelo%20site%20e%20quero%20ver%20as%20peças%20disponíveis%20😊"
+       target="_blank" rel="noopener">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36
